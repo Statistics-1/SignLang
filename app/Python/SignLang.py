@@ -19,7 +19,7 @@ hands = mp_hands.Hands(static_image_mode=False, min_detection_confidence=0.3, ma
 cap = cv2.VideoCapture(0)
 
 # Set confidence threshold (adjust this value between 0.0 and 1.0)
-CONFIDENCE_THRESHOLD = 0.7
+CONFIDENCE_THRESHOLD = 0.75
 
 while True:
     ret, frame = cap.read()
