@@ -7,8 +7,7 @@ import numpy as np
 model_dict = pickle.load(open('./app/Python/model.p', 'rb'))
 model = model_dict['model']
 
-# Create label mapping dictionary (outside the loop)
-newlable = {0: 'A', 1: 'B', 2: 'C', 3: 'D', 4: 'E', 5: 'F', 6: 'G', 7: 'H', 8: 'I', 9: 'J'}
+# Create label mapping dictionary (outside the loop for efficiency)
 
 mp_hands = mp.solutions.hands
 mp_drawing = mp.solutions.drawing_utils
@@ -19,7 +18,7 @@ hands = mp_hands.Hands(static_image_mode=False, min_detection_confidence=0.3, ma
 cap = cv2.VideoCapture(0)
 
 # Set confidence threshold (adjust this value between 0.0 and 1.0)
-CONFIDENCE_THRESHOLD = 0.75
+CONFIDENCE_THRESHOLD = 0.1
 
 while True:
     ret, frame = cap.read()
@@ -76,7 +75,7 @@ while True:
         prediction = model.predict([np.asarray(data_aux)])
         prediction_proba = model.predict_proba([np.asarray(data_aux)])
         
-        predicted_character = int(prediction[0])
+        predicted_character = prediction[0]
         confidence = np.max(prediction_proba)  # Get the highest probability
         
         # Display prediction on frame
@@ -84,7 +83,7 @@ while True:
         
         # Only show prediction if confidence is above threshold
         if confidence >= CONFIDENCE_THRESHOLD:
-            cv2.putText(frame, f"Prediction: {newlable[predicted_character]}", (50, 50), 
+            cv2.putText(frame, f"Prediction: {predicted_character}", (50, 50), 
                        cv2.FONT_HERSHEY_SIMPLEX, 1.3, (0, 255, 0), 3, cv2.LINE_AA)
             cv2.putText(frame, f"Confidence: {confidence:.2f}", (50, 100), 
                        cv2.FONT_HERSHEY_SIMPLEX, 0.8, (255, 255, 0), 2, cv2.LINE_AA)
