@@ -4,7 +4,7 @@ import pickle
 import numpy as np
 
 # Load model
-model_dict = pickle.load(open('app/Python/model2.p', 'rb'))
+model_dict = pickle.load(open('modelrf.p', 'rb'))
 model = model_dict['model']
 
 label_map = {
